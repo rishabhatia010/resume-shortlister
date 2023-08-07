@@ -178,12 +178,12 @@ def get_top_resumes_from_database():
     return top_resumes
 
 def send_acceptance_email(to_email):
-    smtp_server = 'smtp.gmail.com'  # Replace with your SMTP server address
+    smtp_server = ""  # Replace with your SMTP server address
     smtp_port = 587  # Replace with your SMTP server port
-    smtp_username = 'rishabhatia7389@gmail.com'  # Replace with your SMTP username
-    smtp_password = '007_Rishabh'  # Replace with your SMTP password
+    smtp_username =  "" # Replace with your SMTP username
+    smtp_password = "" # Replace with your SMTP password
 
-    sender_email = 'rishabhatia7389@gmail.com'  # Replace with your sender email
+    sender_email = ""  # Replace with your sender email
     subject = 'Congratulations! You are accepted!'
     body = 'Dear candidate, \n\nCongratulations! We are pleased to inform you that you have been accepted for the position. \n\nBest regards,\nThe Hiring Team'
 
