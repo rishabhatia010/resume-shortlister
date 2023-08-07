@@ -1,0 +1,100 @@
+# pre_existing_text = pre_existing_doc.read().decode('utf-8')
+    # # Generate questions from the job description
+    # questions = generate_questions_openai(pre_existing_text)
+
+    # # Display the generated questions to the user
+    # st.subheader("Generated Questions")
+    # for i, question in enumerate(questions):
+    #     user_answer = st.text_input(f"Q{i+1}: {question}")
+
+    #     # Save the user's answer to the generated question in the database
+    #     save_generated_question_and_answer(question, user_answer)
+
+    # Display the top resumes from the database
+
+
+    # top_resumes = get_top_resumes_from_database()
+    # if top_resumes:
+    #     st.subheader("Top Resumes with Similarity Percentage > 40%")
+    #     for resume in top_resumes:
+    #         expander = st.expander(
+    #             f"Similarity Percentage: {resume[2]:.2f}%", expanded=False)
+    #         with expander:
+    #             st.code(resume[1])
+
+EMAIL SENDING LOGIC
+
+def send_acceptance_email(to_email):
+    smtp_server = 'smtp.gmail.com'  # Replace with your SMTP server address
+    smtp_port = 587  # Replace with your SMTP server port
+    smtp_username = 'rishabhatia7389@gmail.com'  # Replace with your SMTP username
+    smtp_password = '007_Rishabh'  # Replace with your SMTP password
+
+    sender_email = 'rishabhatia7389@gmail.com'  # Replace with your sender email
+    subject = 'Congratulations! You are accepted!'
+    body = 'Dear candidate, \n\nCongratulations! We are pleased to inform you that you have been accepted for the position. \n\nBest regards,\nThe Hiring Team'
+
+    # Create a MIMEText object to represent the email
+    message = MIMEMultipart()
+    message['From'] = sender_email
+    message['To'] = to_email
+    message['Subject'] = subject
+    message.attach(MIMEText(body, 'plain'))
+
+    try:
+        # Connect to the SMTP server
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()  # Start TLS encryption
+        server.login(smtp_username, smtp_password)
+
+        # Send the email
+        server.sendmail(sender_email, to_email, message.as_string())
+        server.quit()
+        return True
+    except Exception as e:
+        print("Failed to send email:", str(e))
+        return False
+
+
+
+        if similarity_percentage is not None and similarity_percentage > 40.0:
+        candidate_email = st.text_input("Enter candidate's email to send acceptance:")
+        if candidate_email:
+            if send_acceptance_email(candidate_email):
+                st.write(f"Acceptance email sent to {candidate_email}")
+            else:
+                st.write("Failed to send the acceptance email. Please check your SMTP configuration.")
+
+
+
+
+ # Display form for candidates to fill their credentials
+            st.subheader("Candidate Credentials")
+            candidate_name = st.text_input("Name")
+            candidate_email = st.text_input("Email")
+            candidate_phone = st.text_input("Phone")
+            candidate_experience = st.number_input(
+                "Years of Experience", min_value=0, step=1)
+            candidate_education = st.text_input("Education")
+            candidate_skills = st.text_input("Skills")
+
+            if st.button("Submit Credentials"):
+                # Save the candidate's credentials to the database
+                save_candidate_credentials(candidate_name, candidate_email, candidate_phone, candidate_experience, candidate_education, candidate_skills)
+                st.success("Credentials submitted successfully!")
+
+            if similarity_percentage is not None and similarity_percentage > 40.0:
+                candidate_acceptance = st.radio(
+                    "Were you accepted for the position?", ["Yes", "No"])
+
+                if candidate_acceptance == "Yes":
+                    st.subheader("Acceptance Email")
+                    candidate_email = st.text_input(
+                        "Enter candidate's email to send acceptance:")
+                    if st.button("Send Acceptance Email"):
+                        if send_acceptance_email(candidate_email):
+                            st.write(
+                                f"Acceptance email sent to {candidate_email}")
+                        else:
+                            st.write(
+                                "Failed to send the acceptance email. Please check your SMTP configuration.")
